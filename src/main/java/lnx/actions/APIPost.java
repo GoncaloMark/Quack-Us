@@ -1,13 +1,11 @@
-package lnx;
+package lnx.actions;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.file.Files;
-
 import org.jboss.resteasy.reactive.multipart.FileUpload;
-
 import io.quarkus.hibernate.reactive.panache.Panache;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -25,13 +23,12 @@ public class APIPost {
         return fileExtension.equals("jpeg") || fileExtension.equals("jpg") || fileExtension.equals("png");
     }
 
-    public Uni<URI> saveFile(FileUpload form, String fileName) {
-        String targetDirectory = "quackus/src/main/resources/META-INF/resources/images";
-        File outputFile = new File(targetDirectory, fileName);
+    public Uni<String> saveFile(FileUpload form, String fileName) {
+        String targetDirectory = "C:\\Users\\gmgon\\Desktop\\Desktop\\Quack-Us\\quackus\\src\\main\\resources\\META-INF\\resources\\images";
 
     try (
         InputStream fileInputStream = Files.newInputStream(form.uploadedFile());
-        FileOutputStream outputStream = new FileOutputStream(outputFile)
+        FileOutputStream outputStream = new FileOutputStream(targetDirectory + File.separator + fileName)
         ) {
         
         byte[] buffer = new byte[1024*4];
@@ -40,7 +37,7 @@ public class APIPost {
             outputStream.write(buffer, 0, bytesRead);
         }
 
-        return Uni.createFrom().item(outputFile.toURI());
+        return Uni.createFrom().item(fileName);
     } catch (Exception e) {
         e.printStackTrace();
         return Uni.createFrom().failure(e);
