@@ -24,23 +24,22 @@ public class APIPost {
     }
 
     public Uni<String> saveFile(FileUpload form, String fileName) {
-        String targetDirectory = "C:\\Users\\gmgon\\Desktop\\Desktop\\Quack-Us\\quackus\\src\\main\\resources\\META-INF\\resources\\images";
+        String targetDirectory = "src\\main\\resources\\META-INF\\resources\\images\\";
 
-    try (
-        InputStream fileInputStream = Files.newInputStream(form.uploadedFile());
-        FileOutputStream outputStream = new FileOutputStream(targetDirectory + File.separator + fileName)
+        try (
+            InputStream fileInputStream = Files.newInputStream(form.uploadedFile());
+            FileOutputStream outputStream = new FileOutputStream(targetDirectory + File.separator + fileName)
         ) {
-        
-        byte[] buffer = new byte[1024*4];
-        int bytesRead;
-        while ((bytesRead = fileInputStream.read(buffer)) != -1) {
-            outputStream.write(buffer, 0, bytesRead);
-        }
+            byte[] buffer = new byte[1024 * 4];
+            int bytesRead;
+            while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
 
-        return Uni.createFrom().item(fileName);
-    } catch (Exception e) {
-        e.printStackTrace();
-        return Uni.createFrom().failure(e);
-    }
-    }
+            return Uni.createFrom().item(fileName);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Uni.createFrom().failure(e);
+        }
+            }
 }

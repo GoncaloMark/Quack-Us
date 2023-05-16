@@ -3,9 +3,10 @@ package lnx.actions;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import lnx.panache.QuackMeme;
+
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @ApplicationScoped
@@ -23,12 +24,15 @@ public class APIGet {
     }
 
     public Uni<byte[]> getImage(String imageName) {
+        String imagePath = "src\\main\\resources\\META-INF\\resources\\images\\" + imageName;
+        File imageFile = new File(imagePath);
+        String absolutePath = imageFile.getAbsolutePath();
+        
         return Uni.createFrom()
             .item(() -> {
                 byte[] bytes = null;
                 try {
-                    Path imagePath = Paths.get("C:\\Users\\gmgon\\Desktop\\Desktop\\Quack-Us\\quackus\\src\\main\\resources\\META-INF\\resources\\images\\" + imageName);
-                    bytes = Files.readAllBytes(imagePath);
+                    bytes = Files.readAllBytes(Paths.get(absolutePath));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
