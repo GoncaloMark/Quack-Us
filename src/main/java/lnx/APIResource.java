@@ -33,7 +33,8 @@ public class APIResource {
             .transform(imageBytes -> Response.ok(imageBytes, MediaType.APPLICATION_OCTET_STREAM)
                                     .header("Content-Disposition", "attachment; filename=\"image.jpg\"")
                                     .build())
-            .onFailure().recoverWithItem(failure -> Response.status(Response.Status.NOT_FOUND).build());
+            .onFailure()
+            .recoverWithItem(failure -> Response.status(Response.Status.NOT_FOUND).build());
     }
 
     @POST
@@ -53,7 +54,13 @@ public class APIResource {
 
         return postActions.create(meme)
             .flatMap(uri -> postActions.saveFile(form, fileName))
-            .onItem().transform(uri -> Response.ok().build())
-            .onFailure().recoverWithItem(Response.serverError().build());
+            .onItem()
+            .transformToUni(uri -> getActions.getImage(uri))
+            .onItem()
+            .transform(imageBytes -> Response.ok(imageBytes, MediaType.APPLICATION_OCTET_STREAM)
+            .header("Content-Disposition", "attachment; filename=\"image.jpg\"")
+            .build())
+            .onFailure()
+            .recoverWithItem(Response.serverError().build());
     }
 }
