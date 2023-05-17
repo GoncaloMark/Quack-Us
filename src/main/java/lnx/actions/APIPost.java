@@ -24,7 +24,7 @@ public class APIPost {
     }
 
     public Uni<String> saveFile(FileUpload form, String fileName) {
-        String targetDirectory = "src\\main\\resources\\META-INF\\resources\\images\\";
+        String targetDirectory = "images/"; 
 
         try (
             InputStream fileInputStream = Files.newInputStream(form.uploadedFile());

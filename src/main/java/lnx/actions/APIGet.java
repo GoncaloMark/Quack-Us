@@ -24,7 +24,7 @@ public class APIGet {
     }
 
     public Uni<byte[]> getImage(String imageName) {
-        String imagePath = "src\\main\\resources\\META-INF\\resources\\images\\" + imageName;
+        String imagePath = "images/" + imageName;
         File imageFile = new File(imagePath);
         String absolutePath = imageFile.getAbsolutePath();
         
